@@ -21,8 +21,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'CineRating API töötab!' });
 });
 
-sequelize.sync({ alter: true })
-  .then(() => console.log('Andmebaas sünkroniseeritud!'))
-  .catch((err) => console.error('Andmebaasi viga:', err));
+if (process.env.NODE_ENV === 'test') {
+  sequelize.sync({ alter: true })
+    .then(() => console.log('Andmebaas sünkroniseeritud!'))
+    .catch((err) => console.error('Andmebaasi viga:', err));
+}
 
 module.exports = app;
