@@ -1,20 +1,35 @@
-* {
+/* ── GOOGLE FONTS ── */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Open+Sans:wght@300;400;500;600&display=swap');
+
+/* ── CSS VARIABLES (stiiliraamat) ── */
+:root {
+  --black:   #000814;   /* põhitaust */
+  --dark:    #001D3D;   /* navbar ja suuremad sektsioonid */
+  --blue:    #003566;   /* kaardid ja sisuplokid */
+  --gold:    #CCA000;   /* hinnangud ja olulised detailid */
+  --yellow:  #F5CC00;   /* nupud ja tähtsad tegevused */
+  --light:   #EDF0FF;   /* tekst ja kontrast */
+}
+
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #141414;
-  color: #f0f0f0;
+  background: var(--black);
+  color: var(--light);
+  font-family: 'Open Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  cursor: pointer;
-}
+a { text-decoration: none; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
