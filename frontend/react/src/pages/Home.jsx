@@ -97,7 +97,14 @@ function NetflixRow({ title, movies }) {
 
 // ── Main page ──
 export default function Home() {
-  const movies = PLACEHOLDER_MOVIES;
+  const [movies, setMovies] = useState([]);
+
+useEffect(() => {
+  fetch('http://localhost:3001/api/movies')
+    .then(res => res.json())
+    .then(data => setMovies(data))
+    .catch(err => console.error('Viga filmide laadimisel:', err));
+}, []);
   const [current, setCurrent] = useState(0);
   const [search, setSearch] = useState('');
   const intervalRef = useRef(null);
