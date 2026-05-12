@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'CineRating API töötab!' });
 });
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV !== 'test') {
   sequelize.sync({ alter: true })
     .then(() => console.log('Andmebaas sünkroniseeritud!'))
     .catch((err) => console.error('Andmebaasi viga:', err));

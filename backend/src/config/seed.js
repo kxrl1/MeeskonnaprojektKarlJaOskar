@@ -16,16 +16,15 @@ const fetchAndSeedMovies = async () => {
     const movies = response.data.results;
 
     for (const m of movies) {
-      await Movie.findOrCreate({
-        where: { tmdbId: m.id },
-        defaults: {
-          title: m.title,
-          description: m.overview,
-          releaseYear: m.release_date ? parseInt(m.release_date.split('-')[0]) : null,
-          posterUrl: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null,
-          genre: m.genre_ids.join(', '),
-        }
-      });
+      await Movie.upsert({
+      tmdbId: m.id,
+      title: m.title,
+      description: m.overview,
+      releaseYear: m.release_date ? parseInt(m.release_date.split('-')[0]) : null,
+      posterUrl: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null,
+      backdropUrl: m.backdrop_path ? `https://image.tmdb.org/t/p/original${m.backdrop_path}` : null,
+      genre: m.genre_ids.join(', '),
+    });
     }
 
     console.log(`${movies.length} filmi lisatud andmebaasi!`);

@@ -26,6 +26,10 @@ const Movie = sequelize.define('Movie', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  backdropUrl: {
+  type: DataTypes.STRING,
+  allowNull: true,
+  },
   tmdbId: {
     type: DataTypes.INTEGER,
     allowNull: false,
