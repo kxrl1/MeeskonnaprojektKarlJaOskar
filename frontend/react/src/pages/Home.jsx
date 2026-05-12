@@ -2,6 +2,52 @@ import { useState, useEffect, useRef } from 'react';
 import MovieCard from '../components/MovieCard';
 import '../styles/pages/home.css';
 
+function SliderSlide({ slide, onHover }) {
+  const [trailerId, setTrailerId] = useState(null);
+  const [hovered, setHovered] = useState(false);
+
+  const loadTrailer = async () => {
+    if (trailerId) return;
+    try {
+      const res = await fetch(
+        `https://api.kinocheck.com/movies?tmdb_id=${slide.tmdbId}&categories=Trailer`
+      );
+      const data = await res.json();
+      if (data.trailer?.youtube_video_id) {
+        setTrailerId(data.trailer.youtube_video_id);
+      }
+    } catch (err) {
+      console.error('Trailer viga:', err);
+    }
+  };
+
+  return (
+    <div
+      className="slide"
+      onMouseEnter={() => { setHovered(true); loadTrailer(); onHover(true); }}
+      onMouseLeave={() => { setHovered(false); onHover(false); }}
+    >
+      {!(hovered && trailerId) && (
+        <img
+          src={slide.backdropUrl || slide.posterUrl}
+          alt={slide.title}
+          className="slide-img"
+        />
+      )}
+      {hovered && trailerId && (
+        <iframe
+          src={`https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&modestbranding=1`}
+          className="slide-iframe"
+          allow="autoplay"
+          title={slide.title}
+        />
+      )}
+      <div className="slide-overlay" />
+      <div className="slide-label">{slide.title}</div>
+    </div>
+  );
+}
+
 function NetflixRow({ title, movies }) {
   const rowRef = useRef(null);
   const scroll = (dir) => {
@@ -65,16 +111,16 @@ export default function Home() {
     if (sliderMovies.length === 0) return;
     intervalRef.current = setInterval(() => {
       setCurrent(prev => (prev + 1) % sliderMovies.length);
-    }, 3500);
+    }, 30000);
     return () => clearInterval(intervalRef.current);
   }, [sliderMovies.length]);
 
   const goTo = (index) => {
     setCurrent(index);
     clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setCurrent(prev => (prev + 1) % sliderMovies.length);
-    }, 3500);
+  intervalRef.current = setInterval(() => {
+    setCurrent(prev => (prev + 1) % sliderMovies.length);
+  }, 30000);
   };
 
   const filteredMovies = movies.filter(m =>
@@ -84,48 +130,38 @@ export default function Home() {
   return (
     <main className="home">
 
-      {/* HERO SLIDER */}
-      <section className="slider">
-        <div
-          className="slider-track"
-          style={{ transform: `translateX(-${current * 100}%)` }}
-        >
-          {sliderMovies.map((slide) => (
-            <div key={slide.id} className="slide">
-              {slide.posterUrl ? (
-                <img src={slide.posterUrl} alt={slide.title} className="slide-img" />
-              ) : (
-                <div className="slide-placeholder">
-                  <span>MOVIE</span>
-                </div>
-              )}
-              <div className="slide-overlay" />
-              <div className="slide-label">{slide.title}</div>
-            </div>
-          ))}
-        </div>
+{/* HERO SLIDER */}
+<section className="slider">
+  <div
+    className="slider-track"
+    style={{ transform: `translateX(-${current * 100}%)` }}
+  >
+    {sliderMovies.map((slide) => (
+      <SliderSlide key={slide.id} slide={slide} />
+    ))}
+  </div>
 
-        <button className="slider-btn slider-btn--prev" onClick={() => goTo((current - 1 + sliderMovies.length) % sliderMovies.length)}>
-          <svg viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 18l-6-6 6-6"/>
-          </svg>
-        </button>
-        <button className="slider-btn slider-btn--next" onClick={() => goTo((current + 1) % sliderMovies.length)}>
-          <svg viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </button>
+  <button className="slider-btn slider-btn--prev" onClick={() => goTo((current - 1 + sliderMovies.length) % sliderMovies.length)}>
+    <svg viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+  <button className="slider-btn slider-btn--next" onClick={() => goTo((current + 1) % sliderMovies.length)}>
+    <svg viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18l6-6-6-6"/>
+    </svg>
+  </button>
 
-        <div className="slider-dots">
-          {sliderMovies.map((_, i) => (
-            <button
-              key={i}
-              className={`slider-dot${i === current ? ' active' : ''}`}
-              onClick={() => goTo(i)}
-            />
-          ))}
-        </div>
-      </section>
+  <div className="slider-dots">
+    {sliderMovies.map((_, i) => (
+      <button
+        key={i}
+        className={`slider-dot${i === current ? ' active' : ''}`}
+        onClick={() => goTo(i)}
+      />
+    ))}
+  </div>
+</section>
 
       {/* NETFLIX ROW */}
       <NetflixRow title="Popular Movies" movies={movies} />

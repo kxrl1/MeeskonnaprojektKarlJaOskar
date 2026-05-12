@@ -80,6 +80,7 @@
   color: var(--light);
   text-shadow: 0 2px 12px rgba(0,0,0,0.6);
   pointer-events: none;
+  z-index: 3;
 }
 
 /* Arrow buttons */
@@ -99,6 +100,16 @@
   color: var(--light);
   transition: background 0.2s, border-color 0.2s;
   z-index: 10;
+}
+
+.slide-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
 }
 
 .slider-btn:hover {
