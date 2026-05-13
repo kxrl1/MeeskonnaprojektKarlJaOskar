@@ -1,25 +1,29 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import '../styles/pages/loginPage.css'
-
-// Ajutine mock kasutaja kuni backend on valmis
-const MOCK_USER = {
-  email: 'karl@test.ee',
-  password: '1234'
-}
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import '../styles/pages/loginPage.css';
 
 function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  function handleLogin() {
-    if (email === MOCK_USER.email && password === MOCK_USER.password) {
-      localStorage.setItem('user', JSON.stringify({ email }))
-      navigate('/')
-    } else {
-      setError('Vale email või parool!')
+  async function handleLogin() {
+    try {
+      const res = await fetch('http://localhost:3001/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        window.location.href = '/';
+      } else {
+        setError(data.error || 'Vale email või parool!');
+      }
+    } catch (err) {
+      setError('Serveri viga!');
     }
   }
 
@@ -41,9 +45,12 @@ function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={handleLogin}>Logi sisse</button>
+        <p className="login-register-link">
+          Pole kontot? <Link to="/register">Registreeru</Link>
+        </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

@@ -21,26 +21,32 @@ export default function MoviePage() {
       .then(data => setReviews(data));
   }, [id]);
 
-  const submitReview = async () => {
-    if (!rating || !content) {
-      setMessage('Palun vali hinnang ja kirjuta arvustus!');
-      return;
-    }
-    const res = await fetch(`http://localhost:3001/api/movies/${id}/reviews`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: 1, rating, content })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setReviews([...reviews, data]);
-      setRating(0);
-      setContent('');
-      setMessage('Arvustus lisatud!');
-    } else {
-      setMessage(data.error);
-    }
-  };
+const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
+
+const submitReview = async () => {
+  if (!savedUser) {
+    setMessage('Pead olema sisse logitud!');
+    return;
+  }
+  if (!rating || !content) {
+    setMessage('Palun vali hinnang ja kirjuta arvustus!');
+    return;
+  }
+  const res = await fetch(`http://localhost:3001/api/movies/${id}/reviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: savedUser.id, rating, content })
+  });
+  const data = await res.json();
+  if (res.ok) {
+    setReviews([...reviews, data]);
+    setRating(0);
+    setContent('');
+    setMessage('Arvustus lisatud!');
+  } else {
+    setMessage(data.error);
+  }
+};
 
   if (!movie) return <div className="movie-loading">Laen...</div>;
 

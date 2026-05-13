@@ -22,4 +22,15 @@ const getUserById = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUserById };
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'username', 'email', 'createdAt']
+    });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: 'Serveri viga' });
+  }
+};
+
+module.exports = { createUser, getUserById, getAllUsers };
