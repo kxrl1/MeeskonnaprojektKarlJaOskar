@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import MovieCard from '../components/MovieCard';
 import '../styles/pages/home.css';
+import { Link } from 'react-router-dom';
 
 function SliderSlide({ slide, onHover = () => {} }) {
   const [trailerId, setTrailerId] = useState(null);
@@ -26,26 +27,29 @@ function SliderSlide({ slide, onHover = () => {} }) {
       className="slide"
       onMouseEnter={() => { setHovered(true); loadTrailer(); onHover(true); }}
       onMouseLeave={() => { setHovered(false); onHover(false); }}
-    >
-      {!(hovered && trailerId) && (
-        <img
-          src={slide.backdropUrl || slide.posterUrl}
-          alt={slide.title}
-          className="slide-img"
-        />
-      )}
-      {hovered && trailerId && (
-        <iframe
-          src={`https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&modestbranding=1`}
-          className="slide-iframe"
-          allow="autoplay"
-          title={slide.title}
-        />
-      )}
-      <div className="slide-overlay" />
-      <div className="slide-label">{slide.title}</div>
-    </div>
-  );
+      >
+        {!(hovered && trailerId) && (
+          <img
+            src={slide.backdropUrl || slide.posterUrl}
+            alt={slide.title}
+            className="slide-img"
+          />
+        )}
+        {hovered && trailerId && (
+          <iframe
+            src={`https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&modestbranding=1`}
+            className="slide-iframe"
+            allow="autoplay"
+            title={slide.title}
+          />
+        )}
+        <div className="slide-overlay" />
+        <div className="slide-label">{slide.title}</div>
+        <Link to={`/movie/${slide.id}`} className="slide-more-btn">
+          Look for more...
+        </Link>
+      </div>
+    );
 }
 
 function NetflixRow({ title, movies }) {
@@ -66,7 +70,7 @@ function NetflixRow({ title, movies }) {
         </button>
         <div className="nf-track" ref={rowRef}>
           {movies.map(movie => (
-            <div key={movie.id} className="nf-card">
+            <Link to={`/movie/${movie.id}`} key={movie.id} className="nf-card" style={{textDecoration: 'none'}}>
               <div className="nf-card-poster">
                 {movie.posterUrl ? (
                   <img src={movie.posterUrl} alt={movie.title} />
@@ -79,7 +83,7 @@ function NetflixRow({ title, movies }) {
                   <div className="nf-card-title">{movie.title}</div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         <button className="nf-btn nf-btn--right" onClick={() => scroll(1)}>
