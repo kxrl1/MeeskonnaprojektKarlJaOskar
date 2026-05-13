@@ -1,9 +1,19 @@
-const { Movie } = require('../models');
+const { Movie, Review } = require('../models');
+const { Sequelize } = require('sequelize');
 
 // GET /api/movies - kõik filmid
 const getAllMovies = async (req, res) => {
   try {
-    const movies = await Movie.findAll();
+    const movies = await Movie.findAll({
+      attributes: {
+        include: [
+          [Sequelize.fn('AVG', Sequelize.col('Reviews.rating')), 'avgRating'],
+          [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'reviewCount']
+        ]
+      },
+      include: [{ model: Review, attributes: [] }],
+      group: ['Movie.id']
+    });
     res.json(movies);
   } catch (err) {
     res.status(500).json({ error: 'Serveri viga' });
