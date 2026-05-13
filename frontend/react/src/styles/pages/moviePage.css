@@ -1,0 +1,174 @@
+.movie-page {
+  background: var(--dark);
+  min-height: 100vh;
+  color: var(--light);
+}
+
+.movie-loading {
+  color: var(--light);
+  padding: 40px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.movie-hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  padding: 60px 40px;
+}
+
+.movie-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,8,20,0.95) 40%, rgba(0,8,20,0.5));
+}
+
+.movie-hero-content {
+  position: relative;
+  display: flex;
+  gap: 40px;
+  max-width: 1100px;
+  z-index: 1;
+}
+
+.movie-poster {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+
+.movie-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.movie-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  color: var(--light);
+}
+
+.movie-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: rgba(237,240,255,0.6);
+}
+
+.movie-avg-rating {
+  font-size: 18px;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.movie-description {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(237,240,255,0.8);
+  max-width: 600px;
+}
+
+.movie-review-section {
+  padding: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.movie-review-section h2,
+.movie-reviews h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--light);
+}
+
+.star-picker {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.star {
+  font-size: 32px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.3);
+  transition: color 0.15s;
+}
+
+.star.active {
+  color: var(--gold);
+}
+
+.review-input {
+  width: 100%;
+  max-width: 600px;
+  height: 100px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: var(--light);
+  padding: 12px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  resize: vertical;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.review-submit-btn {
+  background: var(--yellow);
+  color: var(--black);
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.review-submit-btn:hover {
+  background: var(--gold);
+}
+
+.review-message {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--gold);
+}
+
+.movie-reviews {
+  padding: 40px;
+}
+
+.no-reviews {
+  color: rgba(237,240,255,0.4);
+  font-size: 14px;
+}
+
+.review-card {
+  background: rgba(0,29,61,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+
+.review-rating {
+  color: var(--gold);
+  font-size: 18px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.review-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(237,240,255,0.8);
+}

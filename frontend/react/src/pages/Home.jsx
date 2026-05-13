@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import MovieCard from '../components/MovieCard';
 import '../styles/pages/home.css';
 
-function SliderSlide({ slide, onHover }) {
+function SliderSlide({ slide, onHover = () => {} }) {
   const [trailerId, setTrailerId] = useState(null);
   const [hovered, setHovered] = useState(false);
 
@@ -111,7 +111,7 @@ export default function Home() {
     if (sliderMovies.length === 0) return;
     intervalRef.current = setInterval(() => {
       setCurrent(prev => (prev + 1) % sliderMovies.length);
-    }, 30000);
+    }, 10000);
     return () => clearInterval(intervalRef.current);
   }, [sliderMovies.length]);
 
@@ -120,7 +120,7 @@ export default function Home() {
     clearInterval(intervalRef.current);
   intervalRef.current = setInterval(() => {
     setCurrent(prev => (prev + 1) % sliderMovies.length);
-  }, 30000);
+  }, 10000);
   };
 
   const filteredMovies = movies.filter(m =>
@@ -137,7 +137,14 @@ export default function Home() {
     style={{ transform: `translateX(-${current * 100}%)` }}
   >
     {sliderMovies.map((slide) => (
-      <SliderSlide key={slide.id} slide={slide} />
+      <SliderSlide key={slide.id} slide={slide} onHover={(h) => {
+        if (h) clearInterval(intervalRef.current);
+        else {
+          intervalRef.current = setInterval(() => {
+            setCurrent(prev => (prev + 1) % sliderMovies.length);
+          }, 10000);
+        }
+      }} />
     ))}
   </div>
 
