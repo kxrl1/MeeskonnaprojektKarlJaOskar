@@ -20,8 +20,8 @@ function SliderSlide({ slide, onHover = () => {}, muted, setMuted }) {
       }
     } catch (err) {
       console.error('Trailer viga:', err);
-    }
-  };
+  }
+};
 
   const toggleMute = (e) => {
     e.stopPropagation();
@@ -131,6 +131,7 @@ export default function Home() {
   const [search, setSearch] = useState('');
   const [muted, setMuted] = useState(true);
   const intervalRef = useRef(null);
+  const [selectedGenre, setSelectedGenre] = useState('');
 
   useEffect(() => {
     fetch('http://localhost:3001/api/movies')
@@ -157,9 +158,13 @@ export default function Home() {
   }, 10000);
   };
 
-  const filteredMovies = movies.filter(m =>
-    m.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const genres = [...new Set(movies.flatMap(m => m.genre ? m.genre.split(', ') : []))].sort();
+
+  const filteredMovies = movies.filter(m => {
+    const matchesSearch = m.title.toLowerCase().includes(search.toLowerCase());
+    const matchesGenre = selectedGenre ? m.genre?.includes(selectedGenre) : true;
+    return matchesSearch && matchesGenre;
+  });
 
   return (
     <main className="home">
@@ -227,7 +232,19 @@ export default function Home() {
             onChange={e => setSearch(e.target.value)}
             className="search-input"
           />
-          <button className="search-btn">Filter</button>
+          <select
+            className="genre-select"
+            value={selectedGenre}
+            onChange={e => setSelectedGenre(e.target.value)}
+          >
+            <option value="">All genres</option>
+            {genres.map(g => (
+             <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
+          <button className="search-btn" onClick={() => { setSearch(''); setSelectedGenre(''); }}>
+            Reset
+          </button>
         </div>
       </section>
 
