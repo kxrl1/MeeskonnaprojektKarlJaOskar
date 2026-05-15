@@ -3,15 +3,16 @@ import MovieCard from '../components/MovieCard';
 import '../styles/pages/home.css';
 import { Link } from 'react-router-dom';
 
-function SliderSlide({ slide, onHover = () => {} }) {
+function SliderSlide({ slide, onHover = () => {}, muted, setMuted }) {
   const [trailerId, setTrailerId] = useState(null);
   const [hovered, setHovered] = useState(false);
+  const iframeRef = useRef(null);
 
   const loadTrailer = async () => {
     if (trailerId) return;
     try {
       const res = await fetch(
-        `https://api.kinocheck.com/movies?tmdb_id=${slide.tmdbId}&categories=Trailer`
+        `https://api.kinocheck.com/movies?tmdb_id=${slide.tmdbId}&categories=Trailer&language=en`
       );
       const data = await res.json();
       if (data.trailer?.youtube_video_id) {
@@ -22,34 +23,62 @@ function SliderSlide({ slide, onHover = () => {} }) {
     }
   };
 
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    const newMuted = !muted;
+    setMuted(newMuted);
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow.postMessage(
+      JSON.stringify({ event: 'command', func: newMuted ? 'mute' : 'unMute' }),
+      '*'
+    );
+  }
+};
+
   return (
     <div
       className="slide"
       onMouseEnter={() => { setHovered(true); loadTrailer(); onHover(true); }}
       onMouseLeave={() => { setHovered(false); onHover(false); }}
-      >
-        {!(hovered && trailerId) && (
-          <img
-            src={slide.backdropUrl || slide.posterUrl}
-            alt={slide.title}
-            className="slide-img"
-          />
-        )}
-        {hovered && trailerId && (
+    >
+      {!(hovered && trailerId) && (
+        <img
+          src={slide.backdropUrl || slide.posterUrl}
+          alt={slide.title}
+          className="slide-img"
+        />
+      )}
+      {hovered && trailerId && (
+        <>
           <iframe
-            src={`https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&modestbranding=1`}
-            className="slide-iframe"
-            allow="autoplay"
-            title={slide.title}
+          ref={iframeRef}
+          src={`https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&modestbranding=1&enablejsapi=1`}
+          className="slide-iframe"
+          allow="autoplay"
+          title={slide.title}
+          onLoad={() => {
+            if (!muted && iframeRef.current) {
+              setTimeout(() => {
+                iframeRef.current?.contentWindow.postMessage(
+                  JSON.stringify({ event: 'command', func: 'unMute' }),
+                  '*'
+                  );
+                }, 500);
+              }
+            }}
           />
-        )}
-        <div className="slide-overlay" />
-        <div className="slide-label">{slide.title}</div>
-        <Link to={`/movie/${slide.id}`} className="slide-more-btn">
-          Look for more...
-        </Link>
-      </div>
-    );
+          <button className="slide-mute-btn" onClick={toggleMute}>
+            {muted ? '🔇' : '🔊'}
+          </button>
+        </>
+      )}
+      <div className="slide-overlay" />
+      <div className="slide-label">{slide.title}</div>
+      <Link to={`/movie/${slide.id}`} className="slide-more-btn">
+        Vaata lähemalt →
+      </Link>
+    </div>
+  );
 }
 
 function NetflixRow({ title, movies }) {
@@ -100,6 +129,7 @@ export default function Home() {
   const [movies, setMovies] = useState([]);
   const [current, setCurrent] = useState(0);
   const [search, setSearch] = useState('');
+  const [muted, setMuted] = useState(true);
   const intervalRef = useRef(null);
 
   useEffect(() => {
@@ -141,7 +171,7 @@ export default function Home() {
     style={{ transform: `translateX(-${current * 100}%)` }}
   >
     {sliderMovies.map((slide) => (
-      <SliderSlide key={slide.id} slide={slide} onHover={(h) => {
+      <SliderSlide key={slide.id} slide={slide} muted={muted} setMuted={setMuted} onHover={(h) => {
         if (h) clearInterval(intervalRef.current);
         else {
           intervalRef.current = setInterval(() => {
