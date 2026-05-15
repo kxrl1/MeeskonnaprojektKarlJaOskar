@@ -1,0 +1,84 @@
+.watchlist-page {
+  background: var(--dark);
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.watchlist-title {
+  color: var(--light);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.watchlist-empty {
+  color: rgba(237,240,255,0.5);
+  font-size: 16px;
+}
+
+.watchlist-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.watchlist-card-wrap {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.watchlist-card-wrap .movie-card {
+  flex: unset;
+  min-width: unset;
+  width: 100%;
+  border-right: none;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.watchlist-card-wrap .movie-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.watchlist-remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,0,0,0.7);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.watchlist-remove-btn:hover {
+  background: rgba(255,0,0,1);
+}
+
+.watchlist-not-logged {
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.watchlist-not-logged h2 {
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 16px;
+}
+
+.watchlist-not-logged a {
+  color: var(--gold);
+}

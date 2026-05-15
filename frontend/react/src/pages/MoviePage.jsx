@@ -48,6 +48,36 @@ const submitReview = async () => {
   }
 };
 
+const addToWatchlist = async () => {
+  const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!savedUser) {
+    setMessage('Pead olema sisse logitud!');
+    return;
+  }
+  const res = await fetch('http://localhost:3001/api/watchlist', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: savedUser.id, movieId: parseInt(id) })
+  });
+  const data = await res.json();
+  console.log('Watchlist viga:', data); // ← siia
+  if (res.ok) {
+    setMessage('movie added to watchlist');
+  } else {
+    setMessage(data.error);
+  }
+};
+
+const removeFromWatchlist = async (itemId) => {
+  const res = await fetch(`http://localhost:3001/api/watchlist/${itemId}`, {
+    method: 'DELETE'
+  });
+  if (res.ok) {
+    setWatchlist(prev => prev.filter(i => i.id !== itemId));
+    setMovies(prev => prev.filter((_, index) => watchlist[index].id !== itemId));
+  }
+};
+
   if (!movie) return <div className="movie-loading">Laen...</div>;
 
   const avgRating = reviews.length
@@ -65,6 +95,10 @@ const submitReview = async () => {
         <div className="movie-hero-content">
           <img src={movie.posterUrl} alt={movie.title} className="movie-poster" />
           <div className="movie-info">
+            <button className="watchlist-btn" onClick={addToWatchlist}>
+              + Add to watchlist
+            </button>
+            {message && <p className='review-message'>{message}</p>}
             <h1 className="movie-title">{movie.title}</h1>
             <div className="movie-meta">
               {movie.releaseYear && <span>{movie.releaseYear}</span>}
