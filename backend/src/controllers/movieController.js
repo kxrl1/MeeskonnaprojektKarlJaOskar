@@ -12,7 +12,8 @@ const getAllMovies = async (req, res) => {
         ]
       },
       include: [{ model: Review, attributes: [] }],
-      group: ['Movie.id']
+      group: ['Movie.id'],
+      order: [['id', 'ASC']]
     });
     res.json(movies);
   } catch (err) {

@@ -52,7 +52,7 @@ function SliderSlide({ slide, onHover = () => {}, muted, setMuted }) {
         <>
           <iframe
           ref={iframeRef}
-          src={`https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&modestbranding=1&enablejsapi=1`}
+          src={`https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&modestbranding=1&enablejsapi=1&rel=0`}
           className="slide-iframe"
           allow="autoplay"
           title={slide.title}
@@ -216,7 +216,7 @@ export default function Home() {
 </section>
 
       {/* NETFLIX ROW */}
-      <NetflixRow title="Popular Movies" movies={movies} />
+      <NetflixRow title="Popular Movies" movies={movies.slice(0, 15)} />
 
       {/* ABOUT */}
       <section className="about-section">
