@@ -20,6 +20,7 @@ export default function App() {
         <Route path="/movie/:id"  element={<MoviePage />} />
         <Route path="/profile"    element={<ProfilePage />} />
         <Route path="/watchlist" element={<WatchlistPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );

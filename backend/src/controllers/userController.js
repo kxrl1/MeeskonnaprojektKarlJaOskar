@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Review } = require('../models');
 
 // POST /api/users - loo kasutaja
 const createUser = async (req, res) => {
@@ -33,4 +33,15 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUserById, getAllUsers };
+const getUserReviews = async (req, res) => {
+  try {
+    const reviews = await Review.findAll({
+      where: { userId: req.params.id }
+    });
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json({ error: 'Serveri viga' });
+  }
+};
+
+module.exports = { createUser, getUserById, getAllUsers, getUserReviews };

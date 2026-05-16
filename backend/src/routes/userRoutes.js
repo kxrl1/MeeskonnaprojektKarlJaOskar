@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createUser, getUserById, getAllUsers } = require('../controllers/userController');
+const { createUser, getUserById, getAllUsers, getUserReviews } = require('../controllers/userController');
 
 /**
  * @swagger
@@ -45,5 +45,6 @@ const { createUser, getUserById, getAllUsers } = require('../controllers/userCon
 router.post('/', createUser);
 router.get('/:id', getUserById);
 router.get('/', getAllUsers);
+router.get('/:id/reviews', getUserReviews);
 
 module.exports = router;
