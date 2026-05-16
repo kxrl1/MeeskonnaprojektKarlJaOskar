@@ -132,6 +132,8 @@ export default function Home() {
   const [muted, setMuted] = useState(true);
   const intervalRef = useRef(null);
   const [selectedGenre, setSelectedGenre] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedRating, setSelectedRating] = useState('');
 
   useEffect(() => {
     fetch('http://localhost:3001/api/movies')
@@ -159,11 +161,15 @@ export default function Home() {
   };
 
   const genres = [...new Set(movies.flatMap(m => m.genre ? m.genre.split(', ') : []))].sort();
+  const years = [...new Set(movies.map(m => m.releaseYear).filter(Boolean))].sort((a, b) => b - a);
+
 
   const filteredMovies = movies.filter(m => {
     const matchesSearch = m.title.toLowerCase().includes(search.toLowerCase());
     const matchesGenre = selectedGenre ? m.genre?.includes(selectedGenre) : true;
-    return matchesSearch && matchesGenre;
+    const matchesYear = selectedYear ? m.releaseYear === parseInt(selectedYear) : true;
+    const matchesRating = selectedRating ? parseFloat(m.avgRating) >= parseFloat(selectedRating) : true;
+    return matchesSearch && matchesGenre && matchesYear && matchesRating;
   });
 
   return (
@@ -227,23 +233,34 @@ export default function Home() {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Otsi filmi..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="search-input"
           />
-          <select
-            className="genre-select"
-            value={selectedGenre}
-            onChange={e => setSelectedGenre(e.target.value)}
-          >
-            <option value="">All genres</option>
+        </div>
+        <div className="filter-bar">
+          <select className="filter-select" value={selectedGenre} onChange={e => setSelectedGenre(e.target.value)}>
+            <option value="">Kõik žanrid</option>
             {genres.map(g => (
-             <option key={g} value={g}>{g}</option>
+              <option key={g} value={g}>{g}</option>
             ))}
           </select>
-          <button className="search-btn" onClick={() => { setSearch(''); setSelectedGenre(''); }}>
-            Reset
+          <select className="filter-select" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
+            <option value="">Kõik aastad</option>
+            {years.map(y => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+          <select className="filter-select" value={selectedRating} onChange={e => setSelectedRating(e.target.value)}>
+            <option value="">Kõik hinnangud</option>
+            <option value="4">⭐ 4+</option>
+            <option value="3">⭐ 3+</option>
+            <option value="2">⭐ 2+</option>
+            <option value="1">⭐ 1+</option>
+          </select>
+          <button className="reset-btn" onClick={() => { setSearch(''); setSelectedGenre(''); setSelectedYear(''); setSelectedRating(''); }}>
+            Lähtesta
           </button>
         </div>
       </section>
