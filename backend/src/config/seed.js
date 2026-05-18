@@ -37,6 +37,7 @@ const fetchAndSeedMovies = async () => {
         releaseYear: m.release_date ? parseInt(m.release_date.split('-')[0]) : null,
         posterUrl: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null,
         backdropUrl: m.backdrop_path ? `https://image.tmdb.org/t/p/original${m.backdrop_path}` : null,
+        tmdbRating: m.vote_average || null,
         genre: m.genre_ids.map(id => GENRES[id] || id).join(', '),
       });
     }

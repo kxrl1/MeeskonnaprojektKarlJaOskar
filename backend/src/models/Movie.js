@@ -35,6 +35,10 @@ const Movie = sequelize.define('Movie', {
     allowNull: false,
     unique: true,
   },
+  tmdbRating: {
+  type: DataTypes.FLOAT,
+  allowNull: true,
+  },
 });
 
 module.exports = Movie;

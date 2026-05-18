@@ -165,12 +165,14 @@ export default function Home() {
 
 
   const filteredMovies = movies.filter(m => {
-    const matchesSearch = m.title.toLowerCase().includes(search.toLowerCase());
-    const matchesGenre = selectedGenre ? m.genre?.includes(selectedGenre) : true;
-    const matchesYear = selectedYear ? m.releaseYear === parseInt(selectedYear) : true;
-    const matchesRating = selectedRating ? parseFloat(m.avgRating) >= parseFloat(selectedRating) : true;
-    return matchesSearch && matchesGenre && matchesYear && matchesRating;
-  });
+  const effectiveRating = m.avgRating ? parseFloat(m.avgRating) : m.tmdbRating ? parseFloat(m.tmdbRating) / 2 : 0;
+  const matchesSearch = m.title.toLowerCase().includes(search.toLowerCase());
+  const matchesGenre = selectedGenre ? m.genre?.includes(selectedGenre) : true;
+  const matchesYear = selectedYear ? m.releaseYear === parseInt(selectedYear) : true;
+  const matchesRating = selectedRating ? effectiveRating >= parseFloat(selectedRating) : true;
+  return matchesSearch && matchesGenre && matchesYear && matchesRating;
+});
+
 
   return (
     <main className="home">

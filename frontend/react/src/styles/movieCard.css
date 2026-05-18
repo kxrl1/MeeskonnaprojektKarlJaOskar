@@ -73,6 +73,12 @@
   color: var(--gold);
 }
 
+.movie-tmdb-rating {
+  font-size: 10px;
+  color: rgba(150, 160, 180, 0.6);
+  margin-top: 2px;
+}
+
 .movie-rating svg {
   width: 12px;
   height: 12px;
