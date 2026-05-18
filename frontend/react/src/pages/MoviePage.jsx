@@ -11,7 +11,6 @@ export default function MoviePage() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    console.log('Movie ID:', id);
     fetch(`http://localhost:3001/api/movies/${id}`)
       .then(res => res.json())
       .then(data => setMovie(data));
@@ -60,7 +59,7 @@ const addToWatchlist = async () => {
     body: JSON.stringify({ userId: savedUser.id, movieId: parseInt(id) })
   });
   const data = await res.json();
-  console.log('Watchlist viga:', data); // ← siia
+  console.log('Watchlist viga:', data);
   if (res.ok) {
     setMessage('movie added to watchlist');
   } else {
@@ -106,6 +105,11 @@ const removeFromWatchlist = async (itemId) => {
             </div>
             <div className="movie-avg-rating">
               ⭐ {avgRating} · {reviews.length} arvustust
+              {movie.tmdbRating && (
+                <span style={{fontSize: '14px', color: 'rgba(150,160,180,0.7)', marginLeft: '12px'}}>
+                  TMDB: {(movie.tmdbRating / 2).toFixed(1)}
+                </span>
+              )}
             </div>
             <p className="movie-description">{movie.description}</p>
           </div>
