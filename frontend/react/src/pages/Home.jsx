@@ -131,6 +131,7 @@ export default function Home() {
   const [search, setSearch] = useState('');
   const [muted, setMuted] = useState(true);
   const intervalRef = useRef(null);
+  const [filterOpen, setFilterOpen] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedRating, setSelectedRating] = useState('');
@@ -240,32 +241,53 @@ export default function Home() {
             onChange={e => setSearch(e.target.value)}
             className="search-input"
           />
+          <button className="filter-toggle-btn" onClick={() => setFilterOpen(true)}>
+            🎛 Filter
+          </button>
         </div>
-        <div className="filter-bar">
-          <select className="filter-select" value={selectedGenre} onChange={e => setSelectedGenre(e.target.value)}>
+      </section>
+
+      {/* FILTER DRAWER */}
+      <div className={`filter-drawer-overlay ${filterOpen ? 'open' : ''}`} onClick={() => setFilterOpen(false)} />
+      <div className={`filter-drawer ${filterOpen ? 'open' : ''}`}>
+        <button className="filter-drawer-close" onClick={() => setFilterOpen(false)}>✕</button>
+        <div className="filter-drawer-title">Filtreeri</div>
+
+        <div className="filter-drawer-row">
+          <label>Žanr</label>
+          <select className="filter-drawer-select" value={selectedGenre} onChange={e => setSelectedGenre(e.target.value)}>
             <option value="">Kõik žanrid</option>
             {genres.map(g => (
               <option key={g} value={g}>{g}</option>
             ))}
           </select>
-          <select className="filter-select" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
+        </div>
+
+        <div className="filter-drawer-row">
+          <label>Aasta</label>
+          <select className="filter-drawer-select" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
             <option value="">Kõik aastad</option>
             {years.map(y => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
-          <select className="filter-select" value={selectedRating} onChange={e => setSelectedRating(e.target.value)}>
+        </div>
+
+        <div className="filter-drawer-row">
+          <label>Hinnang</label>
+          <select className="filter-drawer-select" value={selectedRating} onChange={e => setSelectedRating(e.target.value)}>
             <option value="">Kõik hinnangud</option>
             <option value="4">⭐ 4+</option>
             <option value="3">⭐ 3+</option>
             <option value="2">⭐ 2+</option>
             <option value="1">⭐ 1+</option>
           </select>
-          <button className="reset-btn" onClick={() => { setSearch(''); setSelectedGenre(''); setSelectedYear(''); setSelectedRating(''); }}>
-            Lähtesta
-          </button>
         </div>
-      </section>
+
+        <button className="filter-drawer-reset" onClick={() => { setSelectedGenre(''); setSelectedYear(''); setSelectedRating(''); setFilterOpen(false); }}>
+          Reset filtrid
+        </button>
+      </div>
 
       {/* MOVIE GRID */}
       <section className="grid-section">
