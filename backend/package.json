@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test jest --testEnvironment node"
+    "test": "cross-env NODE_ENV=test jest --testEnvironment node"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "jest": "^30.3.0",
     "sqlite3": "^6.0.1",
     "supertest": "^7.2.2"
