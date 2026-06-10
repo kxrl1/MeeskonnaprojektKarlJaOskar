@@ -92,3 +92,50 @@ describe('Watchlist voog', () => {
     expect(res.body.length).toBe(0);
   });
 });
+
+// Vigade käsitlemine
+describe('Vigade käsitlemine', () => {
+  test('duplikaatarvustus tagastab 400', async () => {
+    await request(app).post('/api/movies/1/reviews').send({
+      userId: 1, rating: 4, content: 'Esimene arvustus'
+    });
+    const res = await request(app).post('/api/movies/1/reviews').send({
+      userId: 1, rating: 3, content: 'Teine arvustus'
+    });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Oled juba selle filmi arvustanud');
+  });
+
+  test('vale hinnang tagastab vea', async () => {
+    const res = await request(app).post('/api/movies/1/reviews').send({
+      userId: 2, rating: 10, content: 'Vale hinnang'
+    });
+    expect(res.status).toBe(400);
+  });
+});
+
+// Auth login voog
+describe('Auth voog', () => {
+  test('POST /api/users → POST /api/auth/login', async () => {
+    await request(app).post('/api/users').send({
+      username: 'logintest',
+      email: 'login@test.com',
+      passwordHash: 'parool123'
+    });
+    const res = await request(app).post('/api/auth/login').send({
+      email: 'login@test.com',
+      password: 'parool123'
+    });
+    expect(res.status).toBe(200);
+    expect(res.body.user).toBeDefined();
+    expect(res.body.user.email).toBe('login@test.com');
+  });
+
+  test('vale parooliga login tagastab 401', async () => {
+    const res = await request(app).post('/api/auth/login').send({
+      email: 'login@test.com',
+      password: 'valeParool'
+    });
+    expect(res.status).toBe(401);
+  });
+});

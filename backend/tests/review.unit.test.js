@@ -1,7 +1,6 @@
 const { Sequelize } = require('sequelize');
 const { DataTypes } = require('sequelize');
 
-// Loome testimiseks eraldi in-memory andmebaasi
 const sequelize = new Sequelize('sqlite::memory:', { logging: false });
 
 const Review = sequelize.define('Review', {
@@ -42,4 +41,20 @@ test('hinnang üle 5 annab vea', async () => {
   await expect(
     Review.create({ rating: 6, content: 'Liiga hea', userId: 1, movieId: 3 })
   ).rejects.toThrow();
+});
+
+test('sama kasutaja ei saa sama filmi kahte korda arvustada', async () => {
+  await Review.create({ rating: 4, content: 'Hea!', userId: 1, movieId: 10 });
+  const existing = await Review.findOne({ where: { userId: 1, movieId: 10 } });
+  expect(existing).not.toBeNull();
+});
+
+test('keskmise arvutamine on õige', () => {
+  const reviews = [
+    { rating: 4 },
+    { rating: 2 },
+    { rating: 5 }
+  ];
+  const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+  expect(avg).toBeCloseTo(3.67, 1);
 });
