@@ -10,7 +10,7 @@ function RegisterPage() {
 
   async function handleRegister() {
     if (!username || !email || !password) {
-      setError('Kõik väljad on kohustuslikud!');
+      setError('All fields are required!');
       return;
     }
     try {
@@ -23,21 +23,21 @@ function RegisterPage() {
       if (res.ok) {
         navigate('/login');
       } else {
-        setError(data.error || 'Registreerimine ebaõnnestus!');
+        setError(data.error || 'Registration failed!');
       }
     } catch (err) {
-      setError('Serveri viga!');
+      setError('Server error!');
     }
   }
 
   return (
     <div className="login-wrapper">
       <div className="login-box">
-        <h2>Registreeru</h2>
+        <h2>Register</h2>
         {error && <p className="login-error">{error}</p>}
         <input
           type="text"
-          placeholder="Kasutajanimi"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -49,13 +49,13 @@ function RegisterPage() {
         />
         <input
           type="password"
-          placeholder="Parool"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleRegister}>Registreeru</button>
+        <button onClick={handleRegister}>Register</button>
         <p className="login-register-link">
-          On juba konto? <Link to="/login">Logi sisse</Link>
+          Already have an account? <Link to="/login">Log in</Link>
         </p>
       </div>
     </div>

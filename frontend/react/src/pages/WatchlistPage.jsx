@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
-import '../styles/pages/watchlistPage.css';
+import '../styles/pages/WatchlistPage.css';
 
 export default function WatchlistPage() {
   const [watchlist, setWatchlist] = useState([]);
@@ -36,16 +36,16 @@ export default function WatchlistPage() {
 
   if (!savedUser) return (
     <div className="watchlist-not-logged">
-      <h2>Pead olema sisse logitud!</h2>
-      <Link to="/login">Logi sisse</Link>
+      <h2>You must be logged in!</h2>
+      <Link to="/login">Log in</Link>
     </div>
   );
 
   return (
     <div className="watchlist-page">
-      <h1 className="watchlist-title">Minu Watchlist ({movies.length})</h1>
+      <h1 className="watchlist-title">My Watchlist ({movies.length})</h1>
       {movies.length === 0 ? (
-        <p className="watchlist-empty">Watchlist on tühi. Lisa filme!</p>
+        <p className="watchlist-empty">Watchlist is empty. Add some movies!</p>
       ) : (
         <div className="watchlist-grid">
           {movies.map((movie, index) => (

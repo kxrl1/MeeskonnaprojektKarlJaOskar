@@ -39,11 +39,11 @@ export default function ProfilePage() {
           <div className="profile-stats">
             <div className="profile-stat">
               <span className="stat-number">{watchlist.length}</span>
-              <span className="stat-label">Watchlistis</span>
+              <span className="stat-label">In Watchlist</span>
             </div>
             <div className="profile-stat">
               <span className="stat-number">{reviews.length}</span>
-              <span className="stat-label">Arvustust</span>
+              <span className="stat-label">Reviews</span>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function ProfilePage() {
       {/* LINGID */}
       <div className="profile-links">
         <Link to="/watchlist" className="profile-link-btn">
-          🎬 Vaata watchlisti
+          🎬 View watchlist
         </Link>
       </div>
 

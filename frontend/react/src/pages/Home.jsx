@@ -75,7 +75,7 @@ function SliderSlide({ slide, onHover = () => {}, muted, setMuted }) {
       <div className="slide-overlay" />
       <div className="slide-label">{slide.title}</div>
       <Link to={`/movie/${slide.id}`} className="slide-more-btn">
-        Vaata lähemalt →
+        View more →
       </Link>
     </div>
   );
@@ -236,13 +236,13 @@ export default function Home() {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Otsi filmi..."
+            placeholder="search movies..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="search-input"
           />
           <button className="filter-toggle-btn" onClick={() => setFilterOpen(true)}>
-            🎛 Filter
+            Filter
           </button>
         </div>
       </section>
@@ -251,12 +251,12 @@ export default function Home() {
       <div className={`filter-drawer-overlay ${filterOpen ? 'open' : ''}`} onClick={() => setFilterOpen(false)} />
       <div className={`filter-drawer ${filterOpen ? 'open' : ''}`}>
         <button className="filter-drawer-close" onClick={() => setFilterOpen(false)}>✕</button>
-        <div className="filter-drawer-title">Filtreeri</div>
+        <div className="filter-drawer-title">Filter</div>
 
         <div className="filter-drawer-row">
-          <label>Žanr</label>
+          <label>Genre</label>
           <select className="filter-drawer-select" value={selectedGenre} onChange={e => setSelectedGenre(e.target.value)}>
-            <option value="">Kõik žanrid</option>
+            <option value="">All genres</option>
             {genres.map(g => (
               <option key={g} value={g}>{g}</option>
             ))}
@@ -264,9 +264,9 @@ export default function Home() {
         </div>
 
         <div className="filter-drawer-row">
-          <label>Aasta</label>
+          <label>Year</label>
           <select className="filter-drawer-select" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
-            <option value="">Kõik aastad</option>
+            <option value="">All years</option>
             {years.map(y => (
               <option key={y} value={y}>{y}</option>
             ))}
@@ -274,9 +274,9 @@ export default function Home() {
         </div>
 
         <div className="filter-drawer-row">
-          <label>Hinnang</label>
+          <label>Rating</label>
           <select className="filter-drawer-select" value={selectedRating} onChange={e => setSelectedRating(e.target.value)}>
-            <option value="">Kõik hinnangud</option>
+            <option value="">All ratings</option>
             <option value="4">⭐ 4+</option>
             <option value="3">⭐ 3+</option>
             <option value="2">⭐ 2+</option>
@@ -285,7 +285,7 @@ export default function Home() {
         </div>
 
         <button className="filter-drawer-reset" onClick={() => { setSelectedGenre(''); setSelectedYear(''); setSelectedRating(''); setFilterOpen(false); }}>
-          Reset filtrid
+          Reset filters
         </button>
       </div>
 

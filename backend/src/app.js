@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 if (process.env.NODE_ENV !== 'test') {
-  sequelize.sync({ alter: true })
+  sequelize.sync({ alter: false })
     .then(() => console.log('Andmebaas sünkroniseeritud!'))
     .catch((err) => console.error('Andmebaasi viga:', err));
 }

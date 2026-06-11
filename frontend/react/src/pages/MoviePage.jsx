@@ -28,7 +28,7 @@ const submitReview = async () => {
     return;
   }
   if (!rating || !content) {
-    setMessage('Palun vali hinnang ja kirjuta arvustus!');
+    setMessage('Please select a rating and write a review!');
     return;
   }
   const res = await fetch(`http://localhost:3001/api/movies/${id}/reviews`, {
@@ -41,7 +41,7 @@ const submitReview = async () => {
     setReviews([...reviews, data]);
     setRating(0);
     setContent('');
-    setMessage('Arvustus lisatud!');
+    setMessage('Review added!');
   } else {
     setMessage(data.error);
   }
@@ -50,7 +50,7 @@ const submitReview = async () => {
 const addToWatchlist = async () => {
   const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
   if (!savedUser) {
-    setMessage('Pead olema sisse logitud!');
+    setMessage('You must be logged in!');
     return;
   }
   const res = await fetch('http://localhost:3001/api/watchlist', {
@@ -77,11 +77,11 @@ const removeFromWatchlist = async (itemId) => {
   }
 };
 
-  if (!movie) return <div className="movie-loading">Laen...</div>;
+  if (!movie) return <div className="movie-loading">Loading...</div>;
 
   const avgRating = reviews.length
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
-    : 'Pole hinnanguid';
+    : 'No ratings';
 
   return (
     <div className="movie-page">
@@ -104,7 +104,7 @@ const removeFromWatchlist = async (itemId) => {
               {movie.genre && <span>{movie.genre}</span>}
             </div>
             <div className="movie-avg-rating">
-              ⭐ {avgRating} · {reviews.length} arvustust
+              ⭐ {avgRating} · {reviews.length} reviews
               {movie.tmdbRating && (
                 <span style={{fontSize: '14px', color: 'rgba(150,160,180,0.7)', marginLeft: '12px'}}>
                   TMDB: {(movie.tmdbRating / 2).toFixed(1)}
@@ -118,7 +118,7 @@ const removeFromWatchlist = async (itemId) => {
 
       {/* ARVUSTUSE VORM */}
       <div className="movie-review-section">
-        <h2>Lisa arvustus</h2>
+        <h2>"Add a review</h2>
         <div className="star-picker">
           {[1,2,3,4,5].map(s => (
             <span
@@ -130,20 +130,20 @@ const removeFromWatchlist = async (itemId) => {
         </div>
         <textarea
           className="review-input"
-          placeholder="Kirjuta arvustus..."
+          placeholder="Write a review..."
           value={content}
           onChange={e => setContent(e.target.value)}
         />
         <button className="review-submit-btn" onClick={submitReview}>
-          Postita arvustus
+          Post review
         </button>
         {message && <p className="review-message">{message}</p>}
       </div>
 
       {/* ARVUSTUSED */}
       <div className="movie-reviews">
-        <h2>Arvustused ({reviews.length})</h2>
-        {reviews.length === 0 && <p className="no-reviews">Pole veel arvustusi.</p>}
+        <h2>Reviews ({reviews.length})</h2>
+        {reviews.length === 0 && <p className="no-reviews">No reviews yet.</p>}
         {reviews.map(r => (
           <div key={r.id} className="review-card">
             <div className="review-header">
