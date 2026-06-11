@@ -19,7 +19,6 @@ Luua kasutajasõbralik keskkond filmide uurimiseks ja arvustamiseks, võimaldade
 - Express.js - veebiraamistik REST API jaoks
 - Sequelize - ORM (Object-Relational Mapping)
 - MySQL - relatsiooniline andmebaas
-- TMDB API - väline filmide andmeallikas
 - Swagger - API dokumentatsioon
 - Jest - testiraamistik
 
@@ -28,6 +27,10 @@ Luua kasutajasõbralik keskkond filmide uurimiseks ja arvustamiseks, võimaldade
 - React Router - marsruutimine
 - Vite - ehitusvahend ja arendusserver
 - CSS3 - stilistimine
+
+- **External APIs:**
+- TMDB API (movie data)
+- KinoCheck API (trailers)
 
 ## MVC Arhitektuuri Selgitus Projekti Kontekstis
 
