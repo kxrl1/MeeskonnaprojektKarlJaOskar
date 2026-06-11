@@ -2,7 +2,7 @@
 
 ## Projekti Nimi ja Lühikirjeldus
 
-**CineRating** on täisravaarendiline veebirakendus filmide avastamiseks, arvustamiseks ja hindamiseks. Rakendus integreerub TMDB API-ga ja võimaldab kasutajatel registreerumist, arvustuste kirjutamist, vaatamisnimekirja haldamist ning filme erinevate kriteeriumite järgi filtreerida.
+**CineRating** on täispinu (full-stack) veebirakendus filmide avastamiseks, arvustamiseks ja hindamiseks. TMDB API-ga liidestatud platvorm võimaldab kasutajatel luua konto, hallata oma vaatamisnimekirja, kirjutada arvustusi ning filtreerida filme erinevate kriteeriumide alusel.
 
 ## Projekti Eesmärk
 
