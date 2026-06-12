@@ -242,6 +242,9 @@ Swagger UI-s näete kõiki API otspunkte, nende parameetreid ja näiteid.
 
 ### Peamised API Otspunktid
 
+**Autentimine:**
+- `POST /api/auth/login` - Sisselogimine
+
 **Kasutajad:**
 - `POST /api/users` - Registreerimine
 - `GET /api/users/:id` - Kasutaja andmed
@@ -269,7 +272,7 @@ Käivita testid käsuga:
 
 ```bash
 cd backend
-npm run test
+npm test
 ```
 
 ### Testide Failid
