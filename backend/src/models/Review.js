@@ -14,6 +14,8 @@ const Review = sequelize.define('Review', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+}, {
+  indexes: [{ unique: true, fields: ['userId', 'movieId'] }],
 });
 
 module.exports = Review;
